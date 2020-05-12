@@ -1,0 +1,27 @@
+static void attachDocuments(VendTable vendTable, str nameDocument)
+{
+    DocuRef docuRef;
+    DocuActionArchive archive;
+    VendTable _vendTable;
+    str _name;
+    ;
+
+    select RecId from _vendTable where _vendTable.AccountNum == vendTable.AccountNum;
+
+    if (_vendTable != null)
+    {
+
+        ttsBegin;
+        docuRef.clear();
+        docuRef.RefRecId = _vendTable.RecId;
+        docuRef.RefTableId = tableNum("VendTable");
+        docuRef.RefCompanyId = curext();
+        docuRef.Name = nameDocument;
+        docuRef.TypeId = 'File';
+        docuRef.insert();
+        archive = new DocuActionArchive();
+        archive.add(docuRef, nameDocument);
+        ttsCommit;
+
+    }
+}
